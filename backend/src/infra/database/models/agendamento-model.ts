@@ -23,6 +23,15 @@ const agendamentoSchema = new mongoose.Schema({
   tipoAtendimento: {
     type: String,
     enum: ["convenio", "particular"]
+  },
+  lembreteEnviadoEm: {
+    type: Date,
+    default: null
+  },
+
+  quantidadeLembretes: {
+    type: Number,
+    default: 0
   }
 });
 
