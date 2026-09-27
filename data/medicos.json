@@ -1,0 +1,154 @@
+[
+  {
+    "id": "MED01",
+    "nome": "Dr. Paulo Mendes",
+    "especialidade": "Cardiologia",
+    "grade": [
+      {
+        "dia": "segunda",
+        "inicio": "07:00",
+        "fim": "12:00"
+      },
+      {
+        "dia": "quarta",
+        "inicio": "07:00",
+        "fim": "12:00"
+      },
+      {
+        "dia": "sexta",
+        "inicio": "13:00",
+        "fim": "18:00"
+      }
+    ]
+  },
+  {
+    "id": "MED02",
+    "nome": "Dra. Ana Ribeiro",
+    "especialidade": "Dermatologia",
+    "grade": [
+      {
+        "dia": "terca",
+        "inicio": "08:00",
+        "fim": "12:00"
+      },
+      {
+        "dia": "terca",
+        "inicio": "14:00",
+        "fim": "18:00"
+      },
+      {
+        "dia": "quinta",
+        "inicio": "08:00",
+        "fim": "12:00"
+      },
+      {
+        "dia": "quinta",
+        "inicio": "14:00",
+        "fim": "18:00"
+      }
+    ]
+  },
+  {
+    "id": "MED03",
+    "nome": "Dr. Carlos Souza",
+    "especialidade": "Ortopedia",
+    "grade": [
+      {
+        "dia": "segunda",
+        "inicio": "13:00",
+        "fim": "18:00"
+      },
+      {
+        "dia": "quarta",
+        "inicio": "13:00",
+        "fim": "18:00"
+      },
+      {
+        "dia": "sexta",
+        "inicio": "08:00",
+        "fim": "12:00"
+      }
+    ]
+  },
+  {
+    "id": "MED04",
+    "nome": "Dra. Fernanda Lima",
+    "especialidade": "Pediatria",
+    "grade": [
+      {
+        "dia": "segunda",
+        "inicio": "08:00",
+        "fim": "12:00"
+      },
+      {
+        "dia": "terca",
+        "inicio": "08:00",
+        "fim": "12:00"
+      },
+      {
+        "dia": "quarta",
+        "inicio": "08:00",
+        "fim": "12:00"
+      },
+      {
+        "dia": "quinta",
+        "inicio": "08:00",
+        "fim": "12:00"
+      },
+      {
+        "dia": "sexta",
+        "inicio": "08:00",
+        "fim": "12:00"
+      }
+    ]
+  },
+  {
+    "id": "MED05",
+    "nome": "Dr. Roberto Alves",
+    "especialidade": "Clínica Geral",
+    "grade": [
+      {
+        "dia": "segunda",
+        "inicio": "14:00",
+        "fim": "18:00"
+      },
+      {
+        "dia": "terca",
+        "inicio": "14:00",
+        "fim": "18:00"
+      },
+      {
+        "dia": "quarta",
+        "inicio": "14:00",
+        "fim": "18:00"
+      },
+      {
+        "dia": "quinta",
+        "inicio": "14:00",
+        "fim": "18:00"
+      }
+    ]
+  },
+  {
+    "id": "MED06",
+    "nome": "Dra. Beatriz Costa",
+    "especialidade": "Ginecologia",
+    "grade": [
+      {
+        "dia": "terca",
+        "inicio": "08:00",
+        "fim": "12:00"
+      },
+      {
+        "dia": "quarta",
+        "inicio": "14:00",
+        "fim": "18:00"
+      },
+      {
+        "dia": "quinta",
+        "inicio": "08:00",
+        "fim": "12:00"
+      }
+    ]
+  }
+]
