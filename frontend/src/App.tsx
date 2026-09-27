@@ -8,6 +8,7 @@ type Indicadores = {
   realizadas: number;
   faltas: number;
   taxaFaltas: number;
+  porMedico: IndicadorMedico[];
 };
 
 type Agendamento = {
@@ -21,6 +22,19 @@ type Agendamento = {
   quantidadeLembretes?: number;
 };
 
+type Medico = {
+  _id: string;
+  nome: string;
+  especialidade: string;
+};
+
+type IndicadorMedico = {
+  medicoId: string;
+  realizadas: number;
+  faltas: number;
+  taxaFaltas: number;
+};
+
 function App() {
   const [indicadores, setIndicadores] = useState<Indicadores | null>(null);
   const [agendamentos, setAgendamentos] = useState<Agendamento[]>([]);
@@ -28,23 +42,33 @@ function App() {
   const [erro, setErro] = useState("");
   const [mensagem, setMensagem] = useState("");
   const [processandoId, setProcessandoId] = useState<string | null>(null);
+  const [medicos, setMedicos] = useState<Medico[]>([]);
+  const [dataInicio, setDataInicio] = useState("2025-01-01");
+  const [dataFim, setDataFim] = useState("2026-12-31");
+  const [medicoSelecionado, setMedicoSelecionado] = useState("");
 
   async function carregarDados() {
     try {
       setCarregando(true);
       setErro("");
 
-      const [resIndicadores, resAgendamentos] = await Promise.all([
-        fetch(`${API}/indicadores?inicio=2025-01-01&fim=2026-12-31`),
-        fetch(`${API}/agendamentos/pendentes-confirmacao`)
+      const [resIndicadores, resAgendamentos, resMedicos] = await Promise.all([
+        fetch(`${API}/indicadores?inicio=${dataInicio}&fim=${dataFim}`),
+        fetch(`${API}/agendamentos/pendentes-confirmacao`),
+        fetch(`${API}/medicos`)
       ]);
 
-      if (!resIndicadores.ok || !resAgendamentos.ok) {
+      if (
+        !resIndicadores.ok ||
+        !resAgendamentos.ok ||
+        !resMedicos.ok
+      ) {
         throw new Error("Não foi possível consultar a API.");
       }
 
       setIndicadores(await resIndicadores.json());
       setAgendamentos(await resAgendamentos.json());
+      setMedicos(await resMedicos.json());
     } catch (error) {
       setErro(
         error instanceof Error ? error.message : "Erro desconhecido."
@@ -129,6 +153,29 @@ function App() {
     }).format(new Date(data));
   }
 
+  const indicadoresFiltrados = medicoSelecionado
+  ? indicadores?.porMedico.filter(
+      (item) => item.medicoId === medicoSelecionado
+    ) ?? []
+  : indicadores?.porMedico ?? [];
+
+  const resumoFiltrado = medicoSelecionado
+    ? {
+        realizadas: indicadoresFiltrados[0]?.realizadas ?? 0,
+        faltas: indicadoresFiltrados[0]?.faltas ?? 0,
+        total:
+          (indicadoresFiltrados[0]?.realizadas ?? 0) +
+          (indicadoresFiltrados[0]?.faltas ?? 0),
+        taxaFaltas: indicadoresFiltrados[0]?.taxaFaltas ?? 0
+      }
+    : indicadores;
+
+  const agendamentosFiltrados = medicoSelecionado
+  ? agendamentos.filter(
+      (agendamento) => agendamento.medicoId === medicoSelecionado
+    )
+  : agendamentos;
+
   return (
     <div className="app">
       <header className="cabecalho">
@@ -142,6 +189,55 @@ function App() {
           Atualizar dados
         </button>
       </header>
+
+      <section className="filtros">
+        <div>
+          <label htmlFor="dataInicio">Data inicial</label>
+          <input
+            id="dataInicio"
+            type="date"
+            lang="pt-BR"
+            value={dataInicio}
+            onChange={(e) => setDataInicio(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="dataFim">Data final</label>
+          <input
+            id="dataFim"
+            type="date"
+            lang="pt-BR"
+            value={dataFim}
+            onChange={(e) => setDataFim(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="medico">Médico</label>
+
+          <select
+            id="medico"
+            value={medicoSelecionado}
+            onChange={(e) => setMedicoSelecionado(e.target.value)}
+          >
+            <option value="">Todos os médicos</option>
+
+            {medicos.map((medico) => (
+              <option key={medico._id} value={medico._id}>
+                {medico.nome}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <button
+          onClick={carregarDados}
+          disabled={carregando || !dataInicio || !dataFim || dataInicio > dataFim}
+        >
+          Aplicar filtros
+        </button>
+      </section>
 
       {erro && <div className="erro">{erro}</div>}
       {mensagem && <div className="sucesso">{mensagem}</div>}
@@ -172,6 +268,64 @@ function App() {
             </div>
           </section>
 
+          <section className="painel painel-medicos">
+            <div className="secao-titulo">
+              <div>
+                <h2>Indicadores por médico</h2>
+                <p>Comparativo das consultas realizadas e faltas registradas.</p>
+              </div>
+            </div>
+
+            <div className="tabela-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Médico</th>
+                    <th>Especialidade</th>
+                    <th>Realizadas</th>
+                    <th>Faltas</th>
+                    <th>Taxa de faltas</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {indicadoresFiltrados.map((item) => {
+                    const medico = medicos.find(
+                      (medico) => medico._id === item.medicoId
+                    );
+
+                    return (
+                      <tr key={item.medicoId}>
+                        <td>
+                          <strong>{medico?.nome ?? item.medicoId}</strong>
+                        </td>
+
+                        <td>{medico?.especialidade ?? "—"}</td>
+                        <td>{item.realizadas}</td>
+                        <td>{item.faltas}</td>
+
+                        <td>
+                          <div className="taxa-medico">
+                            <strong>{item.taxaFaltas.toFixed(2)}%</strong>
+
+                            <div className="barra-taxa">
+                              <div
+                                className="barra-preenchimento"
+                                style={{
+                                  width: `${item.taxaFaltas}%`
+                                }}
+                              />
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </section>
+
           <section className="painel">
             <div className="secao-titulo">
               <div>
@@ -180,7 +334,7 @@ function App() {
               </div>
 
               <span className="contador">
-                {agendamentos.length} pendentes
+                {agendamentosFiltrados.length} pendentes
               </span>
             </div>
 
@@ -198,7 +352,7 @@ function App() {
                 </thead>
 
                 <tbody>
-                  {agendamentos.map((agendamento) => (
+                  {agendamentosFiltrados.map((agendamento) => (
                     <tr key={agendamento._id}>
                       <td>
                         <strong>{agendamento.pacienteNome}</strong>
@@ -252,7 +406,7 @@ function App() {
                 </tbody>
               </table>
 
-              {agendamentos.length === 0 && (
+              {agendamentosFiltrados.length === 0 && (
                 <p className="vazio">Nenhuma consulta pendente encontrada.</p>
               )}
             </div>

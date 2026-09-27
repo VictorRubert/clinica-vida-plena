@@ -208,3 +208,82 @@ td small {
   background: #276b61;
   color: white;
 }
+
+.sucesso {
+  padding: 16px;
+  margin-bottom: 24px;
+  background: #193d32;
+  color: #a8e6ca;
+  border: 1px solid #35745b;
+  border-radius: 8px;
+}
+
+.acoes button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.painel-medicos {
+  margin-bottom: 32px;
+}
+
+.taxa-medico {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.taxa-medico strong {
+  min-width: 65px;
+}
+
+.barra-taxa {
+  width: 120px;
+  height: 8px;
+  background: #34413e;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.barra-preenchimento {
+  height: 100%;
+  background: #64c5a6;
+  border-radius: 10px;
+}
+.filtros {
+  display: flex;
+  align-items: end;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.filtros > div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filtros label {
+  font-size: 13px;
+  color: #aab6b2;
+}
+
+.filtros input {
+  padding: 11px 14px;
+  border: 1px solid #414a48;
+  border-radius: 8px;
+  background: #242b29;
+  color: white;
+  font: inherit;
+}
+
+.filtros select {
+  padding: 11px 14px;
+  min-width: 220px;
+  border: 1px solid #414a48;
+  border-radius: 8px;
+  background: #242b29;
+  color: white;
+  font: inherit;
+}

@@ -87,3 +87,18 @@ export function normalizarData(valor: string): Date | null {
 
   return data;
 }
+
+export function normalizarTipoAtendimento(
+  valor: string
+): "convenio" | "particular" | null {
+  const tipo = String(valor ?? "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+
+  if (tipo === "convenio") return "convenio";
+  if (tipo === "particular") return "particular";
+
+  return null;
+}
