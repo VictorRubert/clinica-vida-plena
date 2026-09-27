@@ -6,8 +6,10 @@
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/main.ts",
     "build": "tsc",
-    "start": "node dist/main.js",
-    "import": "ts-node-dev --transpile-only src/import.ts"
+    "start": "node dist/src/main.js",
+    "import": "node dist/src/import.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "keywords": [],
   "author": "",
